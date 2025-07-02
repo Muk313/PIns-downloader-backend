@@ -78,6 +78,7 @@ def get_pinterest_data(pin_id):
         return None
         
     except Exception as e:
+        logging.exception("Error in get_pinterest_data:")
         raise e
 
 def download_file_content(url):
@@ -91,6 +92,7 @@ def download_file_content(url):
             return response.content, response.headers.get('content-type', 'application/octet-stream')
         return None, None
     except Exception as e:
+        logging.exception("Error in download_file_content:")
         raise e
 
 @download_bp.route('/download', methods=['POST'])
