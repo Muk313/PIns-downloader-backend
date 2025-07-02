@@ -78,8 +78,7 @@ def get_pinterest_data(pin_id):
         return None
         
     except Exception as e:
-        print(f"Error fetching Pinterest data: {e}")
-        return None
+        raise e
 
 def download_file_content(url):
     """Download file content from URL"""
