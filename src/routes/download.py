@@ -91,8 +91,7 @@ def download_file_content(url):
             return response.content, response.headers.get('content-type', 'application/octet-stream')
         return None, None
     except Exception as e:
-        print(f"Error downloading file: {e}")
-        return None, None
+        raise e
 
 @download_bp.route('/download', methods=['POST'])
 def download_content():
