@@ -160,18 +160,16 @@ def download_content():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            pin_data = loop.run_until_complete(get_pinterest_data_playwright(pin_url))
-        finally:
-            loop.close()
-        
-        if not pin_data:
-            return jsonify({'error': 'Could not extract content from Pinterest URL'}), 404
+            pin_data = asyncio.run(get_pinterest_data_playwright(pin_url))
+
+    if not pin_data:
+        return jsonify({"error": "Could not extract content from Pinterest URL"}), 404
         
         # Download the file
-        file_content, content_type = loop.run_until_complete(download_file_content_async(pin_data['url']))
-        
-        if not file_content:
-            return jsonify({'error': 'Could not download the file'}), 500
+         file_content, content_type = asyncio.run(download_file_content_async(pin_data["url"]))
+
+    if not file_content:
+        return jsonify({"error": "Could not download the file"}), 500
         
         # Determine file extension
         if pin_data['type'] == 'video':
