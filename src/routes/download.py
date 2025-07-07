@@ -207,4 +207,4 @@ def download_content():
 @download_bp.route("/health", methods=["GET"])
 def health_check():
     """Health check endpoint"""
-    return jsonify({"status": "healthy", "service": "Pinterest Downloader API"}))
+    return jsonify({"status": "healthy", "service": "Pinterest Downloader API"})
