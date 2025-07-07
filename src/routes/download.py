@@ -1,3 +1,4 @@
+
 from flask import Blueprint, request, jsonify, send_file
 from flask_cors import CORS
 import requests
@@ -174,14 +175,14 @@ def download_content():
         # Determine file extension
         if pin_data["type"] == "video":
             file_extension = ".mp4"
-            filename = f"pinterest_video_{pin_data.get("title", "download")[:20]}.mp4"
+            filename = f"pinterest_video_{pin_data.get('title', 'download')[:20]}.mp4"
         else:
             file_extension = ".jpg"
             if "image/png" in content_type:
                 file_extension = ".png"
             elif "image/gif" in content_type:
                 file_extension = ".gif"
-            filename = f"pinterest_image_{pin_data.get("title", "download")[:20]}{file_extension}"
+            filename = f"pinterest_image_{pin_data.get('title', 'download')[:20]}{file_extension}"
         
         # Clean filename
         filename = re.sub(r"[^\\w\\-_\\.]", "_", filename)
