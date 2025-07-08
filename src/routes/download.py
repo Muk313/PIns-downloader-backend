@@ -1,4 +1,3 @@
-
 from flask import Blueprint, request, jsonify, send_file
 from flask_cors import CORS
 import requests
@@ -18,8 +17,10 @@ logger = logging.getLogger(__name__)
 async def get_pinterest_data_playwright(pin_url):
     """Get Pinterest pin data using Playwright for better reliability"""
     try:
+        logger.info(f"Received pin_url: {pin_url}")
         # Extract pin ID from URL
         pin_id_match = re.search(r"/pin/(\\d+)", pin_url)
+        logger.info(f"pin_id_match: {pin_id_match}")
         if not pin_id_match:
             raise ValueError("Invalid Pinterest URL format")
         
