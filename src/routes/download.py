@@ -149,7 +149,7 @@ async def download_file_content_async(url):
 @download_bp.route("/download", methods=["POST"])
 def download_content():
     """Download Pinterest content endpoint"""
-    print(f"[DEBUG] Request received. JSON data: {request.get_json(silent=True)}")
+    logger.info(f"[DEBUG] Incoming request data: {request.get_json(silent=True)}")
     try:
         data = request.get_json()
         if not data or "url" not in data:
