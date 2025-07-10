@@ -19,7 +19,7 @@ async def get_pinterest_data_playwright(pin_url):
     try:
         logger.info(f"Received pin_url: {pin_url}")
         # Extract pin ID from URL
-        pin_id_match = re.search(r"/pin/(\\d+)", pin_url)
+        pin_id_match = re.search(r'/pin/.*?(\d+)', pin_url)
         logger.info(f"pin_id_match: {pin_id_match}")
         if not pin_id_match:
             raise ValueError("Invalid Pinterest URL format")
