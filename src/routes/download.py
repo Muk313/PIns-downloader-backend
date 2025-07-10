@@ -18,14 +18,17 @@ async def get_pinterest_data_playwright(pin_url):
     """Get Pinterest pin data using Playwright for better reliability"""
     try:
         logger.info(f"Received pin_url: {pin_url}")
-        # Extract pin ID from URL
-        pin_id_match = re.search(r'/pin/.*?(\d+)', pin_url)
-        logger.info(f"pin_id_match: {pin_id_match}")
-        if not pin_id_match:
-            raise ValueError("Invalid Pinterest URL format")
-        
-        pin_id = pin_id_match.group(1)
-        logger.info(f"Extracting data for pin ID: {pin_id}")
+        # Extract pin ID from URL by splitting the URL
+    parts = pin_url.split('/pin/')
+    if len(parts) < 2:
+        raise ValueError("Invalid Pinterest URL format: missing /pin/")
+    
+    pin_id_and_rest = parts[1].split('/')[0] # Get the ID part before the next slash
+    if not pin_id_and_rest.isdigit():
+        raise ValueError("Invalid Pinterest URL format: pin ID is not numeric")
+    
+    pin_id = pin_id_and_rest
+    logger.info(f"Extracted pin ID: {pin_id}") # Update this log to show the extracted ID
         
         # Use a realistic user agent
         user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
