@@ -18,17 +18,18 @@ async def get_pinterest_data_playwright(pin_url):
     """Get Pinterest pin data using Playwright for better reliability"""
     try:
         logger.info(f"Received pin_url: {pin_url}")
+        
         # Extract pin ID from URL by splitting the URL
-    parts = pin_url.split('/pin/')
-    if len(parts) < 2:
-        raise ValueError("Invalid Pinterest URL format: missing /pin/")
-    
-    pin_id_and_rest = parts[1].split('/')[0] # Get the ID part before the next slash
-    if not pin_id_and_rest.isdigit():
-        raise ValueError("Invalid Pinterest URL format: pin ID is not numeric")
-    
-    pin_id = pin_id_and_rest
-    logger.info(f"Extracted pin ID: {pin_id}") # Update this log to show the extracted ID
+        parts = pin_url.split("/pin/")
+        if len(parts) < 2:
+            raise ValueError("Invalid Pinterest URL format: missing /pin/")
+        
+        pin_id_and_rest = parts[1].split("/")[0] # Get the ID part before the next slash
+        if not pin_id_and_rest.isdigit():
+            raise ValueError("Invalid Pinterest URL format: pin ID is not numeric")
+        
+        pin_id = pin_id_and_rest
+        logger.info(f"Extracted pin ID: {pin_id}") # Update this log to show the extracted ID
         
         # Use a realistic user agent
         user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
@@ -152,7 +153,7 @@ async def download_file_content_async(url):
 @download_bp.route("/download", methods=["POST"])
 def download_content():
     """Download Pinterest content endpoint"""
-    logger.info(f"[DEBUG] Incoming request data: {request.get_json(silent=True)}")
+    logger.info(f"[DEBUG] Incoming request data: {request.get_json(silent=True)}") # ADDED/UPDATED THIS LINE
     try:
         data = request.get_json()
         if not data or "url" not in data:
@@ -180,14 +181,14 @@ def download_content():
         # Determine file extension
         if pin_data["type"] == "video":
             file_extension = ".mp4"
-            filename = f"pinterest_video_{pin_data.get('title', 'download')[:20]}.mp4"
+            filename = f"pinterest_video_{pin_data.get("title", "download")[:20]}.mp4"
         else:
             file_extension = ".jpg"
             if "image/png" in content_type:
                 file_extension = ".png"
             elif "image/gif" in content_type:
                 file_extension = ".gif"
-            filename = f"pinterest_image_{pin_data.get('title', 'download')[:20]}{file_extension}"
+            filename = f"pinterest_image_{pin_data.get("title", "download")[:20]}{file_extension}"
         
         # Clean filename
         filename = re.sub(r"[^\\w\\-_\\.]", "_", filename)
