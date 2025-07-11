@@ -1,15 +1,28 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim-buster
+FROM python:3.10-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Install system dependencies required by Playwright
-# These are common dependencies for Chromium, Firefox, and WebKit
-RUN apt-get update && apt-get install -y \
+# These are common dependencies for Chromium, Firefox, and WebKit on Debian Bullseye/Bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libatspi2.0-0 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
     libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
     libnss3 \
-    libfontconfig1 \
+    libsecret-1-0 \
+    libx11-6 \
     libxcomposite1 \
     libxdamage1 \
     libxext6 \
@@ -17,22 +30,10 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libxrender1 \
     libxi6 \
-    libgconf-2-4 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libgbm1 \
-    libasound2 \
-    libatspi2.0-0 \
-    libappindicator1 \
-    libsecret-1-0 \
-    libu2f-udev \
-    libvulkan1 \
     libxkbcommon0 \
-    libxshmfence1 \
+    libxshmfence6 \
     xdg-utils \
-    --no-install-recommends && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
