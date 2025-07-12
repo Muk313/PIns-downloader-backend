@@ -30,7 +30,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrandr2 \
     libxrender1 \
     libxi6 \
-    libxkbcommon0 \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
@@ -39,6 +38,9 @@ COPY requirements.txt .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Debugging: Check if playwright is installed
+RUN pip freeze | grep playwright
 
 # Install Playwright browsers
 RUN playwright install chromium
