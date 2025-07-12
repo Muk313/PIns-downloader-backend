@@ -153,7 +153,7 @@ async def download_file_content_async(url):
 @download_bp.route("/download", methods=["POST"])
 def download_content():
     """Download Pinterest content endpoint"""
-    logger.info(f"[DEBUG] Incoming request data: {request.get_json(silent=True)}") # ADDED/UPDATED THIS LINE
+    logger.info(f"[DEBUG] Incoming request data: {request.get_json(silent=True)}")
     try:
         data = request.get_json()
         if not data or "url" not in data:
@@ -181,14 +181,15 @@ def download_content():
         # Determine file extension
         if pin_data["type"] == "video":
             file_extension = ".mp4"
-            filename = f"pinterest_video_{pin_data.get("title", "download")[:20]}.mp4"
+            # This is line 182, where the error was previously reported
+            filename = f"pinterest_video_{pin_data.get('title', 'download')[:20]}.mp4"
         else:
             file_extension = ".jpg"
             if "image/png" in content_type:
                 file_extension = ".png"
             elif "image/gif" in content_type:
                 file_extension = ".gif"
-            filename = f"pinterest_image_{pin_data.get("title", "download")[:20]}{file_extension}"
+            filename = f"pinterest_image_{pin_data.get('title', 'download')[:20]}{file_extension}"
         
         # Clean filename
         filename = re.sub(r"[^\\w\\-_\\.]", "_", filename)
