@@ -36,14 +36,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Debugging: Check if playwright is installed
-RUN pip freeze | grep playwright
-
-# Install Playwright browsers
-RUN playwright install chromium
+# Install any needed packages specified in requirements.txt and Playwright browsers
+RUN pip install --no-cache-dir -r requirements.txt \
+    && python3 -m playwright install chromium
 
 # Copy the rest of the application code into the container at /app
 COPY . .
@@ -52,4 +47,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the application
-CMD ["python", "src/main.py"]
+CMD ["python3", "src/main.py"]
