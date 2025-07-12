@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
     libxi6 \
     libxkbcommon0 \
-    libxshmfence6 \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
