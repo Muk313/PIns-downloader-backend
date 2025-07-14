@@ -1,11 +1,10 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+# Stage 1: Build Stage
+FROM python:3.10-slim AS builder
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
 # Install system dependencies required by Playwright
-# These are common dependencies for Chromium, Firefox, and WebKit on Debian Bullseye/Bookworm
 RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-liberation \
     libasound2 \
@@ -33,14 +32,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file into the container at /app
+# Copy requirements and install Python dependencies
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install any needed packages specified in requirements.txt and Playwright browsers
-RUN pip install --no-cache-dir -r requirements.txt \
-    && python3 -m playwright install chromium
+# Install Playwright browsers
+RUN python3 -m playwright install chromium --with-deps
 
-# Copy the rest of the application code into the container at /app
+
+# Stage 2: Runtime Stage
+FROM python:3.10-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy installed Python packages from the builder stage
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+
+# Copy Playwright browser binaries from the builder stage
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+
+# Copy the rest of the application code
 COPY . .
 
 # Expose the port the app runs on
