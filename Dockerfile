@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
     libxi6 \
     xdg-utils \
-    && rm -rf /var/lib/apt/lists/*
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
