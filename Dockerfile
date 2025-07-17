@@ -30,4 +30,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the application
-CMD ["python3", "src/main.py"]
+CMD ["bash", "-c", "python3 -m gunicorn --bind 0.0.0.0:5000 src.main:app"]
